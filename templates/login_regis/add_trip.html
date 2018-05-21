@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+
+    <link rel="stylesheet" href="{% static 'node_modules/bootstrap/dist/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+    <div class="cont">
+        <div class="regis">
+            <a href="/success">Home</a>
+            <a href="/logout">Logout</a>
+                <h1>Add a Trip</h1>
+                <form action="/addTrip" method="POST">
+                        {% csrf_token %}
+                    <input type="hidden" name="user" value="{{request.session.user_id}}">
+                    <div class="form-group">
+                            {% if request.session.errors.emp %}
+                                        <div class="alert alert-danger">
+                                                <p>{{request.session.errors.emp}}</p>
+                                        </div>
+                            {% endif %}
+                            <label for="destination">Destination</label>
+                            <input type="text" class="form-controfl" placeholder="Destination" name="destination" value="">
+                    </div>
+                    <div class="form-group">
+                            <label for="description">Description</label>
+                            <input type="text" class="form-controfl" placeholder="Description" name="description" value="">
+                    </div>
+                    <h3>Please input date in proper format</h3>
+                    <h3>YYYY-MM-DD</h3>
+                    <div class="form-group">
+                                {% if request.session.errors.date %}
+                                <div class="alert alert-danger">
+                                        <p>{{request.session.errors.date}}</p>
+                                </div>
+                                {% endif %}
+                            <label for="date">Start Date</label>
+                            <input type="text" class="form-controfl" placeholder="Start Date" name="date" value="">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="enddate">End Date</label>
+                        <input type="text" class="form-controfl" placeholder="End Date" name="enddate" value="">
+                </div>
+                    <button type="submit" class="btn btn-primary">Add Trip</button>
+                </form>
+        </div>
+    </div>
+</body>
+</html>

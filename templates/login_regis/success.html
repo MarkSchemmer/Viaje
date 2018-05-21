@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'node_modules/bootstrap/dist/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+
+    <div class="cont">
+        {% if request.session.success %}
+        <div class="alert alert-success">
+            <strong>{{ request.session.success }} {{user.first_name}}</strong>
+        </div>
+        {% endif %}
+        <a href="/logout">Logout</a>
+
+        <div class="mytravals">
+                <h3>Your Trip Schedules</h3>
+                <table class="table table-striped">
+ 
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Destination</th>
+                        <th scope="col">Traval Start Date</th>
+                        <th scope="col">Traval End Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                            {% for trip in trips %}
+                            <tr>
+                                <th scope="col">
+                                    <a href="/success/destination/{{trip.id}}">{{trip.id}}</a>
+                                </th>
+                                <th scope="col">{{trip.destination}}</th>
+                                <th scope="col">{{trip.traval_start_date}}</th>
+                                <th scope="col">{{trip.traval_end_date}}</th>
+                                </tr>
+                            {% endfor %}
+
+                            {% for trip in my_other_trips %}
+                            <tr>
+                                <th>
+                                    <a href="/success/destination/{{trip.id}}">{{trip.id}}</a>
+                                </th>
+                                <th>{{trip.destination}}</th>
+                                <th scope="col">{{trip.traval_start_date}}</th>
+                                <th scope="col">{{trip.traval_end_date}}</th>
+                    
+                            </tr>
+                            {% endfor %}
+
+
+                    </tbody>
+                </table>  
+        </div>
+
+        <div class="other_travals">
+                <h3>Other User's Traval Plans</h3>
+                <table class="table table-striped">
+ 
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Destination</th>
+                        <th scope="col">Traval Start Date</th>
+                        <th scope="col">Traval End Date</th>
+                        <th scope="col">Do you want to Join</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                        {% for trip in other %}
+
+                        <tr>
+
+                        <th scope="col">
+                                <a href="/success/destination/{{trip.id}}">{{trip.id}}</a>
+                            </th>
+                            <th scope="col">{{trip.trip_creator.first_name}}</th>
+                            <th scope="col">{{trip.destination}}</th>
+                            <th scope="col">{{trip.traval_start_date}}</th>
+                            <th scope="col">{{trip.traval_end_date}}</th>
+                            <th scope="col">
+                                <form action="/join" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="trip_id" value="{{trip.id}}">
+                                        <button type="submit">Join</button>
+                                </form>
+                            </th>
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+                </table>  
+        </div>
+
+
+        <div class="add_traval">
+            <a href="/success/add_trip">Add Traval Plan</a>
+        </div>
+
+</div>
+</body>
+</html>
+
